@@ -2,19 +2,19 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": `${process.env.API_URL}/api/$1`
+      "destination": "https://rangdl-pansou.hf.space/api/$1"
     },
     {
       "source": "/qqpd/(.*)",
-      "destination": `${process.env.API_URL}/qqpd/$1`
+      "destination": "https://rangdl-pansou.hf.space/qqpd/$1"
     },
     {
       "source": "/gying/(.*)",
-      "destination": `${process.env.API_URL}/gying/$1`
+      "destination": "https://rangdl-pansou.hf.space/gying/$1"
     },
     {
       "source": "/weibo/(.*)",
-      "destination": `${process.env.API_URL}/weibo/$1`
+      "destination": "https://rangdl-pansou.hf.space/weibo/$1"
     }
   ]
 }

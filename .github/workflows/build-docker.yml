@@ -1,11 +1,11 @@
 name: Build and Push Docker Image
 
-#on:
-#  push:
-#    branches: [ main ]
-#    tags: [ 'v*' ]
-#  pull_request:
-#    branches: [ main ]
+on:
+  push:
+    branches: [ main2 ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main2 ]
 
 env:
   REGISTRY: ghcr.io

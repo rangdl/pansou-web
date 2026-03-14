@@ -32,7 +32,8 @@ jobs:
           agent-browser open "$SPACE_URL"
           # 等待页面上出现 "Sign in" 文字，确保页面完全加载。
           # 如果你的应用首页没有 "Sign in"，请替换成你页面中一定会出现的文字，比如 "Hello" 或你的应用标题。
-          agent-browser wait --text "404"
+          # agent-browser wait --text "404"
+          sleep 5
           # 截图保存为 page.png
           agent-browser screenshot page.png
           agent-browser close

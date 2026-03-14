@@ -1,20 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://rangdl-pansou.hf.space/api/$1"
-    },
-    {
-      "source": "/qqpd/(.*)",
-      "destination": "https://rangdl-pansou.hf.space/qqpd/$1"
-    },
-    {
-      "source": "/gying/(.*)",
-      "destination": "https://rangdl-pansou.hf.space/gying/$1"
-    },
-    {
-      "source": "/weibo/(.*)",
-      "destination": "https://rangdl-pansou.hf.space/weibo/$1"
+      "source": "/(.*)",
+      "destination": "https://rangdl-pansou-web.hf.space/$1"
     }
   ]
 }

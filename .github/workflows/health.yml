@@ -1,0 +1,59 @@
+name: Keep Hugging Face Space Alive
+
+# 触发条件：定时任务
+on:
+  schedule:
+    # 每天 UTC 时间 0:00 运行一次（相当于北京时间早上 8:00）
+    # 你可以根据需要修改 cron 表达式
+    - cron: "0 0 * * *"
+  # 也可以手动触发，方便测试
+  workflow_dispatch:
+
+jobs:
+  access-space:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 检出仓库（虽然这里不需要代码，但这是一个好习惯）
+      - uses: actions/checkout@v4
+
+      # 2. 安装 agent-browser 工具（一个基于 Playwright 的浏览器自动化 CLI）[citation:1]
+      - name: Install agent-browser
+        run: npm install -g agent-browser
+
+      # 3. 安装 Playwright 浏览器及其依赖
+      - name: Install Playwright browsers
+        run: agent-browser install --with-deps
+
+      # 4. 打开你的 Hugging Face Space 并截图
+      - name: Visit the Space and take a screenshot
+        env:
+          SPACE_URL: ${{ secrets.HUGGING_FACE_SPACE_URL }}
+        run: |
+          agent-browser open "$SPACE_URL"
+          # 等待页面上出现 "Sign in" 文字，确保页面完全加载。
+          # 如果你的应用首页没有 "Sign in"，请替换成你页面中一定会出现的文字，比如 "Hello" 或你的应用标题。
+          agent-browser wait --text "404 page not found"
+          # 截图保存为 page.png
+          agent-browser screenshot page.png
+          agent-browser close
+
+      # 5. 将截图发送到企业微信群
+      - name: Notify WeChat Work on success
+        if: success() # 只有上一步成功了才执行
+        env:
+          # 从 GitHub Secrets 中读取企业微信的 Webhook 地址
+          WECHAT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK_URL }}
+        run: |
+          # 1. 将截图文件转换为 Base64 编码
+          base64_image=$(base64 -w 0 page.png)
+          
+          # 2. 构造发送图片的 JSON 数据，并通过 curl 发送给企业微信
+          curl -X POST "$WECHAT_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "msgtype": "image",
+              "image": {
+                "base64": "'"$base64_image"'",
+                "md5": "'$(md5sum page.png | cut -d' ' -f1)'"
+              }
+            }'
